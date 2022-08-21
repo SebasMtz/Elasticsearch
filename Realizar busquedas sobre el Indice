@@ -1,0 +1,69 @@
+GET /log_consultas/_count
+{
+  "query": {
+    "bool":{
+      "should":[
+      {
+       "match": 
+         {
+         "estado_consulta": "consumo"
+        }
+        
+      },
+        {
+          "match": {
+         "estado_consulta": "error"
+        }
+      }
+      ]
+    }
+  }
+}
+
+GET /log_consultas/_count
+{
+  "query": {
+      
+       "match_phrase": 
+         {
+         "administrador": "Juan Lara"
+        }
+  }
+}
+
+GET /log_consultas/_count
+{
+  "query": {
+    "bool":{
+      "must":[
+      {
+       "match": 
+         {
+         "estado_consulta": "informativo"
+        }
+        
+      },
+        {
+          "match": {
+         "servicio": "borrado"
+        }
+      }
+      ]
+    }
+  }
+}
+
+
+POST /log_consultas/_search?size=0
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "match": { "estado_consulta": "error" }
+      }
+    }
+  },
+  "aggs": {
+    "Suma de consultas realizadas con estado = error": { "sum": { "field": "consultas_realizadas" } }
+  }
+}
